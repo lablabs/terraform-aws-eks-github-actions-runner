@@ -99,8 +99,8 @@ No modules.
 | <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `map` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
 | <a name="input_github_runner_labels"></a> [github\_runner\_labels](#input\_github\_runner\_labels) | n/a | `list` | <pre>[<br>  "self-hosted"<br>]</pre> | no |
-| <a name="input_github_runner_organization"></a> [github\_runner\_organization](#input\_github\_runner\_organization) | Organization to associate with the runner | `string` | `""` | no |
-| <a name="input_github_runner_repository"></a> [github\_runner\_repository](#input\_github\_runner\_repository) | Repository to associate with the runner | `string` | `""` | no |
+| <a name="input_github_runner_organization"></a> [github\_runner\_organization](#input\_github\_runner\_organization) | Organization to associate with the runner. Canont be used when `github_runner_repository` is set. | `string` | `""` | no |
+| <a name="input_github_runner_repository"></a> [github\_runner\_repository](#input\_github\_runner\_repository) | Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/reposiroty` naming. | `string` | `""` | no |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used | `bool` | `false` | no |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"github-actions-runners"` | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"0.1.1"` | no |

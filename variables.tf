@@ -390,12 +390,12 @@ variable "helm_postrender" {
 
 variable "github_runner_organization" {
   default     = ""
-  description = "Organization to associate with the runner"
+  description = "Organization to associate with the runner. Canont be used when `github_runner_repository` is set."
 }
 
 variable "github_runner_repository" {
   default     = ""
-  description = "Repository to associate with the runner"
+  description = "Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/reposiroty` naming."
 }
 
 variable "github_runner_labels" {
