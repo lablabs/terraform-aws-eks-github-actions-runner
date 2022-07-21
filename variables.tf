@@ -18,24 +18,24 @@ variable "cluster_identity_oidc_issuer_arn" {
 
 variable "helm_chart_name" {
   type        = string
-  default     = "<$addon-name>"
+  default     = "github-actions-runners"
   description = "Helm chart name to be installed"
 }
 
 variable "helm_chart_version" {
   type        = string
-  default     = "<helm_chart_version>"
+  default     = "0.1.1"
   description = "Version of the Helm chart"
 }
 
 variable "helm_release_name" {
   type        = string
-  default     = "<$addon-name>"
+  default     = "github-actions-runner"
   description = "Helm release name"
 }
 variable "helm_repo_url" {
   type        = string
-  default     = "<helm_repo_url>"
+  default     = "https://lablabs.github.io/github-actions-runners-helm/"
   description = "Helm repository"
 }
 
@@ -47,20 +47,20 @@ variable "helm_create_namespace" {
 
 variable "namespace" {
   type        = string
-  default     = "<$addon-name>"
-  description = "The K8s namespace in which the <$addon-name> service account has been created"
+  default     = "github-actions-runner"
+  description = "The K8s namespace in which the github-actions-runner service account has been created"
 }
 
 variable "settings" {
   type        = map(any)
   default     = {}
-  description = "Additional helm sets which will be passed to the Helm chart values, see https://hub.helm.sh/charts/stable/<$addon-name>"
+  description = "Additional helm sets which will be passed to the Helm chart values, see https://hub.helm.sh/charts/stable/github-actions-runner"
 }
 
 variable "values" {
   type        = string
   default     = ""
-  description = "Additional yaml encoded values which will be passed to the Helm chart, see https://hub.helm.sh/charts/stable/<$addon-name>"
+  description = "Additional yaml encoded values which will be passed to the Helm chart, see https://hub.helm.sh/charts/stable/github-actions-runner"
 }
 
 # ================ IRSA variables (optional) ================
@@ -108,7 +108,7 @@ variable "irsa_additional_policies" {
 
 variable "irsa_role_name_prefix" {
   type        = string
-  default     = "<$addon-name>-irsa"
+  default     = "github-actions-runner-irsa"
   description = "The IRSA role name prefix for vector"
 }
 
@@ -119,8 +119,8 @@ variable "irsa_tags" {
 }
 
 variable "service_account_name" {
-  default     = "<$addon-name>"
-  description = "The k8s <$addon-name> service account name"
+  default     = "github-actions-runner"
+  description = "The k8s github-actions-runner service account name"
 }
 
 # ================ argo variables (required) ================
@@ -386,4 +386,20 @@ variable "helm_postrender" {
   type        = map(any)
   default     = {}
   description = "Value block with a path to a binary file to run after helm renders the manifest which can alter the manifest contents"
+}
+
+variable "github_runner_organization" {
+  default     = ""
+  description = "Organization to associate with the runner. Canont be used when `github_runner_repository` is set."
+}
+
+variable "github_runner_repository" {
+  default     = ""
+  description = "Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/reposiroty` naming."
+}
+
+variable "github_runner_labels" {
+  default = [
+    "self-hosted"
+  ]
 }
