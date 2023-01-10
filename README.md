@@ -1,6 +1,6 @@
 # AWS EKS github-actions-runner Terraform module
 
-[![labyrinth labs logo](ll-logo.png)](https://lablabs.io/)
+[<img src="https://lablabs.io/static/ll-logo.png" width=350px>](https://lablabs.io/)
 
 We help companies build, run, deploy and scale software and infrastructure by embracing the right technologies and principles. Check out our website at https://lablabs.io/
 
@@ -11,7 +11,7 @@ We help companies build, run, deploy and scale software and infrastructure by em
 
 ## Description
 
-A terraform module to deploy the github-actions-runner on Amazon EKS cluster. This addon does not install the controller itself, just instances of runners. Use [github-actions-runner-controller](https://github.com/lablabs/terraform-aws-eks-github-actions-runner-controller) to install the controller beforehand.
+A Terraform module to deploy the github-actions-runner on Amazon EKS cluster. This addon does not install the controller itself, just instances of runners. Use [github-actions-runner-controller](https://github.com/lablabs/terraform-aws-eks-github-actions-runner-controller) to install the controller beforehand.
 
 ## Related Projects
 
@@ -20,31 +20,30 @@ Check out other [terraform kubernetes addons](https://github.com/orgs/lablabs/re
 ## Deployment methods
 
 ### Helm
-Deploy helm chart by helm (default method, set `enabled = true`)
+Deploy Helm chart via Helm resource (default method, set `enabled = true`)
 
-### Argo kubernetes
-Deploy helm chart as argo application by kubernetes manifest (set `enabled = true` and `argo_enabled = true`)
+### Argo Kubernetes
+Deploy Helm chart as ArgoCD Application via Kubernetes manifest resource (set `enabled = true` and `argo_enabled = true`)
 
-### Argo helm
-When deploying with ArgoCD application, Kubernetes terraform provider requires access to Kubernetes cluster API during plan time. This introduces potential issue when you want to deploy the cluster with this addon at the same time, during the same Terraform run.
+> **Warning**
+>
+> When deploying with ArgoCD application, Kubernetes terraform provider requires access to Kubernetes cluster API during plan time. This introduces potential issue when you want to deploy the cluster with this addon at the same time, during the same Terraform run.
+>
+> To overcome this issue, the module deploys the ArgoCD application object using the Helm provider, which does not require API access during plan. If you want to deploy the application using this workaround, you can set the `argo_helm_enabled` variable to `true`.
 
-To overcome this issue, the module deploys the ArgoCD application object using the Helm provider, which does not require API access during plan. If you want to deploy the application using this workaround, you can set the `argo_helm_enabled` variable to `true`.
+### Argo Helm
+Deploy Helm chart as ArgoCD Application via Helm resource (set `enabled = true`, `argo_enabled = true` and `argo_helm_enabled = true`)
 
-Create helm release resource and deploy it as argo application (set `enabled = true`, `argo_enabled = true` and `argo_helm_enabled = true`)
-
-<!-- Uncomment paragraph bellow if addon contains IAM resources
 ## AWS IAM resources
 
-To disable of creation IRSA role and IRSA policy, set `irsa_role_create = false` and `irsa_policy_enabled = false`, respectively -->
+To disable of creation IRSA role, set `irsa_role_create = false`
 
-<!-- Uncomment paragraph bellow if addon uses Role assuming
 ### Role assuming
-To assume role set `irsa_assume_role_enabled = true` and specify `irsa_assume_role_arn` variable -->
+To assume role set `irsa_assume_role_enabled = true` and specify `irsa_assume_role_arn` variable
 
 ## Examples
 
 See [Basic example](examples/basic/README.md) for further information.
-
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -87,20 +86,20 @@ No modules.
 | <a name="input_argo_enabled"></a> [argo\_enabled](#input\_argo\_enabled) | If set to true, the module will be deployed as ArgoCD application, otherwise it will be deployed as a Helm release | `bool` | `false` | no |
 | <a name="input_argo_helm_enabled"></a> [argo\_helm\_enabled](#input\_argo\_helm\_enabled) | If set to true, the ArgoCD Application manifest will be deployed using Kubernetes provider as a Helm release. Otherwise it'll be deployed as a Kubernetes manifest. See Readme for more info | `bool` | `false` | no |
 | <a name="input_argo_helm_values"></a> [argo\_helm\_values](#input\_argo\_helm\_values) | Value overrides to use when deploying argo application object with helm | `string` | `""` | no |
-| <a name="input_argo_info"></a> [argo\_info](#input\_argo\_info) | ArgoCD info manifest parameter | `list` | <pre>[<br>  {<br>    "name": "terraform",<br>    "value": "true"<br>  }<br>]</pre> | no |
+| <a name="input_argo_info"></a> [argo\_info](#input\_argo\_info) | ArgoCD info manifest parameter | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "terraform",<br>    "value": "true"<br>  }<br>]</pre> | no |
 | <a name="input_argo_kubernetes_manifest_computed_fields"></a> [argo\_kubernetes\_manifest\_computed\_fields](#input\_argo\_kubernetes\_manifest\_computed\_fields) | List of paths of fields to be handled as "computed". The user-configured value for the field will be overridden by any different value returned by the API after apply. | `list(string)` | <pre>[<br>  "metadata.labels",<br>  "metadata.annotations"<br>]</pre> | no |
 | <a name="input_argo_kubernetes_manifest_field_manager_force_conflicts"></a> [argo\_kubernetes\_manifest\_field\_manager\_force\_conflicts](#input\_argo\_kubernetes\_manifest\_field\_manager\_force\_conflicts) | Forcibly override any field manager conflicts when applying the kubernetes manifest resource | `bool` | `false` | no |
 | <a name="input_argo_kubernetes_manifest_field_manager_name"></a> [argo\_kubernetes\_manifest\_field\_manager\_name](#input\_argo\_kubernetes\_manifest\_field\_manager\_name) | The name of the field manager to use when applying the kubernetes manifest resource. Defaults to Terraform | `string` | `"Terraform"` | no |
 | <a name="input_argo_kubernetes_manifest_wait_fields"></a> [argo\_kubernetes\_manifest\_wait\_fields](#input\_argo\_kubernetes\_manifest\_wait\_fields) | A map of fields and a corresponding regular expression with a pattern to wait for. The provider will wait until the field matches the regular expression. Use * for any value. | `map(string)` | `{}` | no |
-| <a name="input_argo_metadata"></a> [argo\_metadata](#input\_argo\_metadata) | ArgoCD Application metadata configuration. Override or create additional metadata parameters | `map` | <pre>{<br>  "finalizers": [<br>    "resources-finalizer.argocd.argoproj.io"<br>  ]<br>}</pre> | no |
+| <a name="input_argo_metadata"></a> [argo\_metadata](#input\_argo\_metadata) | ArgoCD Application metadata configuration. Override or create additional metadata parameters | `any` | <pre>{<br>  "finalizers": [<br>    "resources-finalizer.argocd.argoproj.io"<br>  ]<br>}</pre> | no |
 | <a name="input_argo_namespace"></a> [argo\_namespace](#input\_argo\_namespace) | Namespace to deploy ArgoCD application CRD to | `string` | `"argo"` | no |
 | <a name="input_argo_project"></a> [argo\_project](#input\_argo\_project) | ArgoCD Application project | `string` | `"default"` | no |
-| <a name="input_argo_spec"></a> [argo\_spec](#input\_argo\_spec) | ArgoCD Application spec configuration. Override or create additional spec parameters | `map` | `{}` | no |
-| <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `map` | `{}` | no |
+| <a name="input_argo_spec"></a> [argo\_spec](#input\_argo\_spec) | ArgoCD Application spec configuration. Override or create additional spec parameters | `any` | `{}` | no |
+| <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `any` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
-| <a name="input_github_runner_labels"></a> [github\_runner\_labels](#input\_github\_runner\_labels) | n/a | `list` | <pre>[<br>  "self-hosted"<br>]</pre> | no |
-| <a name="input_github_runner_organization"></a> [github\_runner\_organization](#input\_github\_runner\_organization) | Organization to associate with the runner. Canont be used when `github_runner_repository` is set. | `string` | `""` | no |
-| <a name="input_github_runner_repository"></a> [github\_runner\_repository](#input\_github\_runner\_repository) | Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/reposiroty` naming. | `string` | `""` | no |
+| <a name="input_github_runner_labels"></a> [github\_runner\_labels](#input\_github\_runner\_labels) | List of labels to associate with the runner | `list(string)` | <pre>[<br>  "self-hosted"<br>]</pre> | no |
+| <a name="input_github_runner_organization"></a> [github\_runner\_organization](#input\_github\_runner\_organization) | Organization to associate with the runner. Cannot be used when `github_runner_repository` is set. | `string` | `""` | no |
+| <a name="input_github_runner_repository"></a> [github\_runner\_repository](#input\_github\_runner\_repository) | Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/repository` naming. | `string` | `""` | no |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used | `bool` | `false` | no |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"github-actions-runners"` | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"0.1.1"` | no |
@@ -137,7 +136,6 @@ No modules.
 | <a name="input_irsa_additional_policies"></a> [irsa\_additional\_policies](#input\_irsa\_additional\_policies) | Map of the additional policies to be attached to default role. Where key is arbitrary id and value is policy arn. | `map(string)` | `{}` | no |
 | <a name="input_irsa_assume_role_arn"></a> [irsa\_assume\_role\_arn](#input\_irsa\_assume\_role\_arn) | Assume role arn. Assume role must be enabled. | `string` | `""` | no |
 | <a name="input_irsa_assume_role_enabled"></a> [irsa\_assume\_role\_enabled](#input\_irsa\_assume\_role\_enabled) | Whether IRSA is allowed to assume role defined by assume\_role\_arn. | `bool` | `false` | no |
-| <a name="input_irsa_policy_enabled"></a> [irsa\_policy\_enabled](#input\_irsa\_policy\_enabled) | Whether to create opinionated policy to allow operations on specified zones in `policy_allowed_zone_ids`. | `bool` | `true` | no |
 | <a name="input_irsa_role_create"></a> [irsa\_role\_create](#input\_irsa\_role\_create) | Whether to create IRSA role and annotate service account | `bool` | `true` | no |
 | <a name="input_irsa_role_name_prefix"></a> [irsa\_role\_name\_prefix](#input\_irsa\_role\_name\_prefix) | The IRSA role name prefix for vector | `string` | `"github-actions-runner-irsa"` | no |
 | <a name="input_irsa_tags"></a> [irsa\_tags](#input\_irsa\_tags) | IRSA resources tags | `map(string)` | `{}` | no |
