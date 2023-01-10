@@ -33,6 +33,7 @@ variable "helm_release_name" {
   default     = "github-actions-runner"
   description = "Helm release name"
 }
+
 variable "helm_repo_url" {
   type        = string
   default     = "https://lablabs.github.io/github-actions-runners-helm/"
@@ -83,12 +84,6 @@ variable "irsa_role_create" {
   description = "Whether to create IRSA role and annotate service account"
 }
 
-variable "irsa_policy_enabled" {
-  type        = bool
-  default     = true
-  description = "Whether to create opinionated policy to allow operations on specified zones in `policy_allowed_zone_ids`."
-}
-
 variable "irsa_assume_role_enabled" {
   type        = bool
   default     = false
@@ -96,6 +91,7 @@ variable "irsa_assume_role_enabled" {
 }
 
 variable "irsa_assume_role_arn" {
+  type        = string
   default     = ""
   description = "Assume role arn. Assume role must be enabled."
 }
@@ -119,6 +115,7 @@ variable "irsa_tags" {
 }
 
 variable "service_account_name" {
+  type        = string
   default     = "github-actions-runner"
   description = "The k8s github-actions-runner service account name"
 }
@@ -156,6 +153,10 @@ variable "argo_project" {
 }
 
 variable "argo_info" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
   default = [{
     "name"  = "terraform"
     "value" = "true"
@@ -164,11 +165,13 @@ variable "argo_info" {
 }
 
 variable "argo_sync_policy" {
+  type        = any
   description = "ArgoCD syncPolicy manifest parameter"
   default     = {}
 }
 
 variable "argo_metadata" {
+  type = any
   default = {
     "finalizers" : [
       "resources-finalizer.argocd.argoproj.io"
@@ -178,11 +181,13 @@ variable "argo_metadata" {
 }
 
 variable "argo_apiversion" {
+  type        = string
   default     = "argoproj.io/v1alpha1"
   description = "ArgoCD Appliction apiVersion"
 }
 
 variable "argo_spec" {
+  type        = any
   default     = {}
   description = "ArgoCD Application spec configuration. Override or create additional spec parameters"
 }
@@ -202,6 +207,7 @@ variable "argo_kubernetes_manifest_computed_fields" {
 }
 
 variable "argo_kubernetes_manifest_field_manager_name" {
+  type        = string
   default     = "Terraform"
   description = "The name of the field manager to use when applying the kubernetes manifest resource. Defaults to Terraform"
 }
@@ -389,17 +395,21 @@ variable "helm_postrender" {
 }
 
 variable "github_runner_organization" {
+  type        = string
   default     = ""
-  description = "Organization to associate with the runner. Canont be used when `github_runner_repository` is set."
+  description = "Organization to associate with the runner. Cannot be used when `github_runner_repository` is set."
 }
 
 variable "github_runner_repository" {
+  type        = string
   default     = ""
-  description = "Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/reposiroty` naming."
+  description = "Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/repository` naming."
 }
 
 variable "github_runner_labels" {
+  type = list(string)
   default = [
     "self-hosted"
   ]
+  description = "List of labels to associate with the runner"
 }
