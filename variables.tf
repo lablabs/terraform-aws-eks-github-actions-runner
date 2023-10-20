@@ -24,7 +24,7 @@ variable "helm_chart_name" {
 
 variable "helm_chart_version" {
   type        = string
-  default     = "0.1.1"
+  default     = "0.2.0"
   description = "Version of the Helm chart"
 }
 
@@ -404,6 +404,12 @@ variable "github_runner_repository" {
   type        = string
   default     = ""
   description = "Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/repository` naming."
+}
+
+variable "github_runner_group" {
+  type        = string
+  default     = ""
+  description = "Group to associate with the runner. See https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/managing-access-to-self-hosted-runners-using-groups"
 }
 
 variable "github_runner_labels" {
