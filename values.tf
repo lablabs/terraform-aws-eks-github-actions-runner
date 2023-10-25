@@ -2,6 +2,7 @@ locals {
   values_default = yamlencode({
     "organization" : var.github_runner_organization
     "repository" : var.github_runner_repository
+    "group" : var.github_runner_group
     "serviceAccount" : {
       "name" : var.service_account_create ? var.service_account_name : ""
       "annotations" : {

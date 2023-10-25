@@ -97,12 +97,13 @@ No modules.
 | <a name="input_argo_spec"></a> [argo\_spec](#input\_argo\_spec) | ArgoCD Application spec configuration. Override or create additional spec parameters | `any` | `{}` | no |
 | <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `any` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
+| <a name="input_github_runner_group"></a> [github\_runner\_group](#input\_github\_runner\_group) | Group to associate with the runner. See https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/managing-access-to-self-hosted-runners-using-groups | `string` | `""` | no |
 | <a name="input_github_runner_labels"></a> [github\_runner\_labels](#input\_github\_runner\_labels) | List of labels to associate with the runner | `list(string)` | <pre>[<br>  "self-hosted"<br>]</pre> | no |
 | <a name="input_github_runner_organization"></a> [github\_runner\_organization](#input\_github\_runner\_organization) | Organization to associate with the runner. Cannot be used when `github_runner_repository` is set. | `string` | `""` | no |
 | <a name="input_github_runner_repository"></a> [github\_runner\_repository](#input\_github\_runner\_repository) | Repository to associate with the runner. Cannot be used when `github_runner_organization` is set. Use `organization/repository` naming. | `string` | `""` | no |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used | `bool` | `false` | no |
 | <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"github-actions-runners"` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"0.1.1"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"0.2.0"` | no |
 | <a name="input_helm_cleanup_on_fail"></a> [helm\_cleanup\_on\_fail](#input\_helm\_cleanup\_on\_fail) | Allow deletion of new resources created in this helm upgrade when upgrade fails | `bool` | `false` | no |
 | <a name="input_helm_create_namespace"></a> [helm\_create\_namespace](#input\_helm\_create\_namespace) | Create the namespace if it does not yet exist | `bool` | `true` | no |
 | <a name="input_helm_dependency_update"></a> [helm\_dependency\_update](#input\_helm\_dependency\_update) | Runs helm dependency update before installing the chart | `bool` | `false` | no |
