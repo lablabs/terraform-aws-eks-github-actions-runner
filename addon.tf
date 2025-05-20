@@ -11,8 +11,7 @@ locals {
 }
 
 module "addon" {
-  # source = "git::https://github.com/lablabs/terraform-aws-eks-universal-addon.git//modules/addon?ref=v0.0.17"
-  source = "../terraform-aws-eks-universal-addon/modules/addon"
+  source = "git::https://github.com/lablabs/terraform-aws-eks-universal-addon.git//modules/addon?ref=v0.0.18"
 
   enabled = var.enabled
 
