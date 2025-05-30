@@ -33,4 +33,6 @@ locals {
       } : tomap({})
     }
   })
+
+  addon_depends_on = []
 }
